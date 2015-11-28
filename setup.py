@@ -8,7 +8,7 @@ setup(
     author='pingf',
     author_email='pingf0@gmail.com',
     name='postboy2',
-    version='0.0.1',
+    version='0.0.2',
     keywords=('post', 'postboy', 'postman', 'http', 'client'),
     description='just a simple but high performance client based on pycurl',
     license='MIT License',
