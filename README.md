@@ -15,6 +15,8 @@ if __name__ == '__main__':
 
 ##Change Log
 
+v0.0.3 : add simple post support
+
 v0.0.2 : reformat the result output
 
 v0.0.1 : add get support

@@ -24,10 +24,22 @@ class PostBoy:
     def _curl_for_get(self, parameters):
         self._header.truncate(0)
         self._data.truncate(0)
-
-        curl = pycurl.Curl()
+        curl = self._basic_curl()
         querymeters = '' if len(parameters) == 0 else '?' + urlencode(parameters)
         curl.setopt(pycurl.URL, self._url + querymeters)
+        return curl
+
+    def _curl_for_post(self, parameters):
+        self._header.truncate(0)
+        self._data.truncate(0)
+        curl = self._basic_curl()
+        postfields = urlencode(parameters)
+        curl.setopt(pycurl.POSTFIELDS, postfields)
+        curl.setopt(pycurl.URL, self._url)
+        return curl
+
+    def _basic_curl(self):
+        curl = pycurl.Curl()
         curl.setopt(pycurl.NOSIGNAL, 1)
         curl.setopt(pycurl.CONNECTTIMEOUT, self._con_timeout)
         curl.setopt(pycurl.TIMEOUT, self._timeout)
@@ -36,13 +48,19 @@ class PostBoy:
         curl.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
         curl.setopt(pycurl.USERAGENT,
                     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36')
-
         curl.setopt(pycurl.WRITEHEADER, self._header)
         curl.setopt(pycurl.WRITEDATA, self._data)
         return curl
 
     def get(self, parameters={}):
         curl = self._curl_for_get(parameters)
+        return self._perform(curl)
+
+    def post(self, parameters={}):
+        curl = self._curl_for_post(parameters)
+        return self._perform(curl)
+
+    def _perform(self, curl):
         try:
             curl.perform()
         except pycurl.error as e:
@@ -82,8 +100,8 @@ class PostBoy:
         }
 
     def _splitted_header(self, decoded_header):
-        splitted_header = decoded_header.split('\r\n')
         result = {'raw': decoded_header}
+        splitted_header = decoded_header.split('\r\n')
         part = 0
         for i, line in enumerate(splitted_header):
             if line is '':
@@ -139,7 +157,6 @@ if __name__ == '__main__':
         for i in range(parts):
             print(header.get(i))
 
-
     data = result.get('data')
     if data:
         print(data.get('title'))
@@ -160,3 +177,19 @@ if __name__ == '__main__':
     data = result.get('data')
     if data:
         print(data.get('title'))
+
+    print('-' * 40)
+    result = PostBoy('http://127.0.0.1:5000/post_test').post({'username': 'meng'})
+
+    error = result.get('error')
+    if error:
+        print(error.get('pycurl-code'))
+        print(error.get('description'))
+    header = result.get('header')
+    if header:
+        parts = header.get('parts')
+        for i in range(parts):
+            print(header.get(i))
+
+    data = result.get('data')
+    print(data)
