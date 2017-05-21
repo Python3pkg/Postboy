@@ -149,47 +149,47 @@ if __name__ == '__main__':
 
     error = result.get('error')
     if error:
-        print(error.get('pycurl-code'))
-        print(error.get('description'))
+        print((error.get('pycurl-code')))
+        print((error.get('description')))
     header = result.get('header')
     if header:
         parts = header.get('parts')
         for i in range(parts):
-            print(header.get(i))
+            print((header.get(i)))
 
     data = result.get('data')
     if data:
-        print(data.get('title'))
+        print((data.get('title')))
 
-    print('-' * 40)
+    print(('-' * 40))
     result = PostBoy('http://www.douban.com').get()
 
     error = result.get('error')
     if error:
-        print(error.get('pycurl-code'))
-        print(error.get('description'))
+        print((error.get('pycurl-code')))
+        print((error.get('description')))
     header = result.get('header')
     if header:
         parts = header.get('parts')
         for i in range(parts):
-            print(header.get(i))
+            print((header.get(i)))
 
     data = result.get('data')
     if data:
-        print(data.get('title'))
+        print((data.get('title')))
 
-    print('-' * 40)
+    print(('-' * 40))
     result = PostBoy('http://127.0.0.1:5000/post_test').post({'username': 'meng'})
 
     error = result.get('error')
     if error:
-        print(error.get('pycurl-code'))
-        print(error.get('description'))
+        print((error.get('pycurl-code')))
+        print((error.get('description')))
     header = result.get('header')
     if header:
         parts = header.get('parts')
         for i in range(parts):
-            print(header.get(i))
+            print((header.get(i)))
 
     data = result.get('data')
     print(data)
